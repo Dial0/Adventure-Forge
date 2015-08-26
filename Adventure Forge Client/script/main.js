@@ -1,3 +1,6 @@
+var GridSize = 64;
+var TileSize = GridSize;
+
 var app = new PLAYGROUND.Application({
     
     scale: 1,
@@ -13,6 +16,8 @@ var app = new PLAYGROUND.Application({
     create: function (){
         this.camera = { x: 200, y: 500 };
         this.loadImage("grass");
+        this.loadImage("stone");
+        this.loadImage("sandstone");
         this.loadImage("podchair");
         this.chair = this.createmysprite("podchair");
         WorldMap(50,50);
@@ -20,7 +25,7 @@ var app = new PLAYGROUND.Application({
     
     step: function(dt){
        
-        var speed = 100;
+        var speed = 1000;
         
         if(this.moveup){
             this.camera.y -= dt*speed;
@@ -43,12 +48,12 @@ var app = new PLAYGROUND.Application({
         
         var rendchair = this.chair;
         this.layer.clear("#000000");
-        this.layer.font("32px Arial");      
-        this.layer.fillStyle("#fff");
-        this.layer.fillText(this.text, 16, 32);
         RenderBGmap.call(this,WorldMap);
         RenderMapObjs.call(this,WorldMap);
-        //this.layer.drawImage(this.images[rendchair.id],rendchair.x,rendchair.y);
+        RenderMenu.call(this,"");
+        this.layer.font("32px Arial");      
+        this.layer.fillStyle("#fff");
+        this.layer.fillText(this.text, 316, 32);
     },
     
     mousemove: function(data) {
@@ -62,11 +67,31 @@ var app = new PLAYGROUND.Application({
     mousedown: function(data) {
         this.text = "mouse down " + data.button + " " + data.x +  " , " + data.y;
         this.clicking = true;
+        if(data.x < 300)
+        {
+            //clicking in menu
+            //call menu function?
+        }
     },
 
     mouseup: function(data) {
         this.text = "mouse up " + data.button + " " + data.x +  " , " + data.y;
         this.clicking = false;
+    },
+    
+    mousewheel: function(event) {
+        event.x         /* mouseX */
+        event.y         /* mouseY */
+        event.delta     /* -1 or 1 */
+        
+        if(event.delta === -1){
+            this.scale /= 1.1;
+        }
+        if(event.delta ===1){
+            this.scale *= 1.1;
+        }
+        this.handleResize();
+        event.original  /* original DOM event */
     },
     
 
@@ -137,9 +162,7 @@ var WorldMap = function(width,height) {
 }
 
 var RenderBGmap = function(WorldMap) {
-    var GridSize = 16;
-    var TileSize = GridSize;
-    
+
     //get tile that is closest to the center of the camera
     var CentTileX = Math.floor(this.camera.x/GridSize);
     var CentTileY = Math.floor(this.camera.y/GridSize);
@@ -184,13 +207,45 @@ var RenderMapObjs = function(WorldMap) {
     //draw it up
     var dst = {x: 0, y: 0};
     for (var RenObj of SortedRenObj) {
+        //calculate offset to drop the image down so that the bounding box defined in RenObj is at the bottom of the image
+        var imageHeightOffset = this.images[RenObj.id].height - RenObj.height;
         dst.x = (this.width / 2) + (RenObj.x - this.camera.x)
-        dst.y = (this.height / 2) + (RenObj.y - this.camera.y)
+        dst.y = (this.height / 2) + (RenObj.y - this.camera.y) - imageHeightOffset;
         this.layer.drawImage(this.images[RenObj.id],dst.x,dst.y);
     }
     
 }
 
+
+var RenderMenu = function(ActiveTab){
+    this.layer.fillStyle("#D0D3DF");
+    this.layer.fillRect(0, 0, 300, this.height);
+    this.layer.fillStyle("#A9AEC5");
+    this.layer.fillRect(0, 0, 300, 32);
+    this.layer.fillStyle("#424762");
+    this.layer.font("20px Calibre"); 
+    this.layer.fillText("Tiles", 4, 24);
+    this.layer.fillText("Objects", 85, 24);
+    this.layer.fillText("Special", 200, 24);
+    var xloc = 0;
+    var yloc = 0;
+    for (var tile in this.images) {
+        
+        var abslocX = 20 + xloc*95;
+        var abslocY = 45 + yloc*95;
+        
+        this.layer.drawImage(this.images[tile],abslocX,abslocY);
+        
+        if(xloc < 2){
+            xloc++;
+        }
+        else{
+            yloc++;
+            xloc=0;
+        }
+    }
+    
+}
 
 var CheckInBounds = function(Obj1,Obj2)
 {
