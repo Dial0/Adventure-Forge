@@ -1,6 +1,6 @@
 var app = new PLAYGROUND.Application({
     
-    scale: 1.5,
+    scale: 1,
     
    createmysprite: function(nameID) {
         return {
@@ -13,6 +13,7 @@ var app = new PLAYGROUND.Application({
     create: function (){
         this.camera = { x: 200, y: 500 };
         this.loadImage("grass");
+        this.loadImage("podchair");
         this.chair = this.createmysprite("podchair");
         WorldMap(50,50);
     },
@@ -45,7 +46,8 @@ var app = new PLAYGROUND.Application({
         this.layer.font("32px Arial");      
         this.layer.fillStyle("#fff");
         this.layer.fillText(this.text, 16, 32);
-        RenderBGmap.call(this,WorldMap)
+        RenderBGmap.call(this,WorldMap);
+        RenderMapObjs.call(this,WorldMap);
         //this.layer.drawImage(this.images[rendchair.id],rendchair.x,rendchair.y);
     },
     
@@ -109,7 +111,7 @@ var WorldMap = function(width,height) {
     WorldMap.width = width;
     WorldMap.height = height;
     WorldMap.BackgroundTileMap = new Array(width*height);
-    WorldMap.MapObjects = {};
+    WorldMap.MapObjects = new Array();
     (function populatemap(){
         for(var i = 0; i< width; i++){
             for(var j = 0; j < height; j++){
@@ -121,6 +123,17 @@ var WorldMap = function(width,height) {
             }
         }
     })();
+    
+    var newobj = { x: 200, y: 200, height: 32, width: 32, id: "podchair"}
+    WorldMap.MapObjects.push(newobj);
+    newobj = { x: 200, y: 300, height: 32, width: 32, id: "podchair"}
+    WorldMap.MapObjects.push(newobj);
+    newobj = { x: 200, y: 400, height: 32, width: 32, id: "podchair"}
+    WorldMap.MapObjects.push(newobj);
+    newobj = { x: 200, y: 321, height: 32, width: 32, id: "podchair"}
+    WorldMap.MapObjects.push(newobj);
+    newobj = { x: 200, y: 311, height: 32, width: 32, id: "podchair"}
+    WorldMap.MapObjects.push(newobj);
 }
 
 var RenderBGmap = function(WorldMap) {
@@ -159,10 +172,51 @@ var RenderBGmap = function(WorldMap) {
 }
 
 var RenderMapObjs = function(WorldMap) {
-    //throw some houses or trees etc on it
+    //throw some houses or trees or critters or what-nots on it
+    //get objects the are inside the camera bounding view
+    var viewbounds = { x: this.camera.x - (this.width/2) , y: this.camera.y - (this.height/2), width: this.width, height: this.height}
+    var RenderObj = WorldMap.MapObjects.filter(CheckInBounds.bind(this,viewbounds));
+    //order them so they overlap and look sweet (things lower on the screen overlap things higher)
+    var SortedRenObj = RenderObj.sort(RenderOrder);
     
-
+    
+    //calculate their relative location from the abosolute location and the camera location
+    //draw it up
+    var dst = {x: 0, y: 0};
+    for (var RenObj of SortedRenObj) {
+        dst.x = (this.width / 2) + (RenObj.x - this.camera.x)
+        dst.y = (this.height / 2) + (RenObj.y - this.camera.y)
+        this.layer.drawImage(this.images[RenObj.id],dst.x,dst.y);
+    }
+    
 }
 
 
+var CheckInBounds = function(Obj1,Obj2)
+{
+    //from 2 objects to points
+    var A1 = {x: Obj1.x, y: Obj1.y};
+    var A2 = {x: Obj1.x + Obj1.width, y: Obj1.y+Obj1.height};
+    var B1 = {x: Obj2.x, y: Obj2.y};
+    var B2 = {x: Obj2.x + Obj2.width, y: Obj2.y + Obj2.height};
+	if((A1.x <= B2.x && A1.y <= B2.y) || (A2.x >= B1.x && A2.y >= B1.y) || (A1.x <= B2.x && A2.y >= B1.y) || (A2.x >= B1.x && A1.y <= B2.y) )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
+
+function RenderOrder(a, b) {
+  if (a.y+a.height < b.y+b.height) {
+    return -1;
+  }
+  if (a.y+a.height > b.y+b.height) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
