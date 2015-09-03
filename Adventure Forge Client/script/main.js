@@ -14,10 +14,12 @@ var app = new PLAYGROUND.Application({
     },
         
     create: function (){
+        this.MenuHitBoxes = {};
         this.camera = { x: 200, y: 500 };
         this.loadImage("grass");
         this.loadImage("stone");
         this.loadImage("sandstone");
+        this.loadImage("sand");
         this.loadImage("podchair");
         this.chair = this.createmysprite("podchair");
         WorldMap(50,50);
@@ -69,8 +71,11 @@ var app = new PLAYGROUND.Application({
         this.clicking = true;
         if(data.x < 300)
         {
-            //clicking in menu
-            //call menu function?
+            menuClick.call(this,data.x,data.y);
+        }
+        else
+        {
+            mapclick.call(this,data.x,data.y);
         }
     },
 
@@ -216,6 +221,34 @@ var RenderMapObjs = function(WorldMap) {
     
 }
 
+var menuClick = function(MouseX,MouseY){
+    var MouseCoOrd = {x: MouseX, y: MouseY, height: 1, width: 1};
+    this.MenuHitBoxes = new Array();
+    var xloc = 0;
+    var yloc = 0;
+    for (var tile in this.images) {
+        
+        var abslocX = 4 + xloc*69;
+        var abslocY = 45 + yloc*69;
+        
+        var menuBox = { tile: tile, x: abslocX, y:abslocY, height: this.images[tile].height, width: this.images[tile].width};
+        
+        this.MenuHitBoxes.push(menuBox);
+        
+        if(xloc < 3){
+            xloc++;
+        }
+        else{
+            yloc++;
+            xloc=0;
+        }
+        
+    }
+    var HitObject = this.MenuHitBoxes.filter(CheckInBounds.bind(this,MouseCoOrd));
+    //check if the mouse is in any hitboxes
+    this.activeTile = HitObject[0].tile;
+    
+}
 
 var RenderMenu = function(ActiveTab){
     this.layer.fillStyle("#D0D3DF");
@@ -231,12 +264,16 @@ var RenderMenu = function(ActiveTab){
     var yloc = 0;
     for (var tile in this.images) {
         
-        var abslocX = 20 + xloc*95;
-        var abslocY = 45 + yloc*95;
-        
+        var abslocX = 4 + xloc*69;
+        var abslocY = 45 + yloc*69;
+        if(tile == this.activeTile)
+        {
+            this.layer.fillStyle("#3E859F");
+            this.layer.fillRect(abslocX-4, abslocY-4, 72, 72);
+        }
         this.layer.drawImage(this.images[tile],abslocX,abslocY);
         
-        if(xloc < 2){
+        if(xloc < 3){
             xloc++;
         }
         else{
@@ -247,6 +284,13 @@ var RenderMenu = function(ActiveTab){
     
 }
 
+var mapclick = function(mouseX, mouseY)
+{
+    var TileX = Math.floor((mouseX + this.camera.x - (this.width / 2))/GridSize);
+    var TileY = Math.floor((mouseY + this.camera.y - (this.height / 2))/GridSize);
+    WorldMap.BackgroundTileMap[TileX * WorldMap.height + TileY].TileId = this.activeTile;
+}
+
 var CheckInBounds = function(Obj1,Obj2)
 {
     //from 2 objects to points
@@ -254,7 +298,13 @@ var CheckInBounds = function(Obj1,Obj2)
     var A2 = {x: Obj1.x + Obj1.width, y: Obj1.y+Obj1.height};
     var B1 = {x: Obj2.x, y: Obj2.y};
     var B2 = {x: Obj2.x + Obj2.width, y: Obj2.y + Obj2.height};
-	if((A1.x <= B2.x && A1.y <= B2.y) || (A2.x >= B1.x && A2.y >= B1.y) || (A1.x <= B2.x && A2.y >= B1.y) || (A2.x >= B1.x && A1.y <= B2.y) )
+    
+    var check1 = (A1.x <= B2.x && A1.y <= B2.y);
+    var check2 = (A2.x >= B1.x && A2.y >= B1.y);
+    var check3 = (A1.x <= B2.x && A2.y >= B1.y);
+    var check4 = (A2.x >= B1.x && A1.y <= B2.y);
+    
+	if( (check1 && check2) || (check3 && check4) )
 	{
 		return true;
 	}
