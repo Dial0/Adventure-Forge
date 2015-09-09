@@ -15,6 +15,7 @@ var app = new PLAYGROUND.Application({
     },
         
     create: function (){
+        
         this.MenuHitBoxes = {};
         this.camera = { x: 200, y: 500 };
         this.loadImage("grass");
@@ -24,6 +25,7 @@ var app = new PLAYGROUND.Application({
         this.loadImage("podchair");
         this.chair = this.createmysprite("podchair");
         WorldMap(150,150);
+        this.activeTile ="grass";
     },
     
     step: function(dt){
@@ -91,12 +93,14 @@ var app = new PLAYGROUND.Application({
         event.delta     /* -1 or 1 */
         
         if(event.delta === -1){
-            RenderWindowScale -= 0.1;
-            //GridSize = Math.floor(GridSize /= 1.1);
-            //TileSize = GridSize;
+            if(RenderWindowScale > 0.3){
+                RenderWindowScale -= 0.1;
+            }
         }
         if(event.delta ===1){
-            RenderWindowScale += 0.1;
+            if(RenderWindowScale < 1.0){
+                RenderWindowScale += 0.1;
+            }
             //GridSize = Math.floor(GridSize *= 1.1);
             //TileSize = GridSize;
         }
