@@ -1,5 +1,6 @@
 var GridSize = 64;
 var TileSize = GridSize;
+var RenderWindowScale = 1;
 
 var app = new PLAYGROUND.Application({
     
@@ -14,6 +15,7 @@ var app = new PLAYGROUND.Application({
     },
         
     create: function (){
+        
         this.MenuHitBoxes = {};
         this.camera = { x: 200, y: 500 };
         this.loadImage("grass");
@@ -22,7 +24,8 @@ var app = new PLAYGROUND.Application({
         this.loadImage("sand");
         this.loadImage("podchair");
         this.chair = this.createmysprite("podchair");
-        WorldMap(50,50);
+        WorldMap(150,150);
+        this.activeTile ="grass";
     },
     
     step: function(dt){
@@ -90,10 +93,16 @@ var app = new PLAYGROUND.Application({
         event.delta     /* -1 or 1 */
         
         if(event.delta === -1){
-            this.scale /= 1.1;
+            if(RenderWindowScale > 0.3){
+                RenderWindowScale -= 0.1;
+            }
         }
         if(event.delta ===1){
-            this.scale *= 1.1;
+            if(RenderWindowScale < 1.0){
+                RenderWindowScale += 0.1;
+            }
+            //GridSize = Math.floor(GridSize *= 1.1);
+            //TileSize = GridSize;
         }
         this.handleResize();
         event.original  /* original DOM event */
@@ -168,12 +177,14 @@ var WorldMap = function(width,height) {
 
 var RenderBGmap = function(WorldMap) {
 
+    var RenTileSize = Math.floor(GridSize * RenderWindowScale);
+    
     //get tile that is closest to the center of the camera
     var CentTileX = Math.floor(this.camera.x/GridSize);
     var CentTileY = Math.floor(this.camera.y/GridSize);
     
-    var ytileres = Math.floor(this.height/TileSize);
-    var xtileres = Math.floor(this.width/TileSize);
+    var ytileres = Math.floor(this.height/RenTileSize);
+    var xtileres = Math.floor(this.width/RenTileSize);
     
     //use a couple tile buffer over the view area
     //to reduce the chance showing blank area
@@ -186,14 +197,16 @@ var RenderBGmap = function(WorldMap) {
 	var xend_tile = Math.floor(CentTileX + (xtileres/ 2 + tilebuf));
     var dst = {x: 0, y: 0};
     
+    var CameraScaledx = this.camera.x * RenderWindowScale;
+    var CameraScaledy = this.camera.y * RenderWindowScale;
+    
     for (var i = xstart_tile; i < xend_tile; i++){
         for (var j = ystart_tile; j < yend_tile; j++){
             if(i > 0 && i < WorldMap.width && j > 0 && j < WorldMap.height){
-                
                 var tile = WorldMap.BackgroundTileMap[i * WorldMap.height + j]
-                dst.x = Math.floor((this.width / 2) + (i * GridSize) - this.camera.x);
-                dst.y = Math.floor((this.height / 2) + (j * GridSize) - this.camera.y);
-                this.layer.drawImage(this.images[tile.TileId],dst.x,dst.y);
+                dst.x = (this.width / 2) + ((i * RenTileSize) - CameraScaledx);
+                dst.y = (this.height / 2) +  ((j * RenTileSize) - CameraScaledy);
+                this.layer.drawImage(this.images[tile.TileId],dst.x,dst.y,RenTileSize,RenTileSize);
             }
         }
     }
@@ -202,21 +215,31 @@ var RenderBGmap = function(WorldMap) {
 var RenderMapObjs = function(WorldMap) {
     //throw some houses or trees or critters or what-nots on it
     //get objects the are inside the camera bounding view
-    var viewbounds = { x: this.camera.x - (this.width/2) , y: this.camera.y - (this.height/2), width: this.width, height: this.height}
+    var viewbounds = {
+        x: this.camera.x - (this.width/2) / RenderWindowScale, 
+        y: this.camera.y - (this.height/2) / RenderWindowScale, 
+        width: this.width / RenderWindowScale, 
+        height: this.height / RenderWindowScale
+    }
     var RenderObj = WorldMap.MapObjects.filter(CheckInBounds.bind(this,viewbounds));
     //order them so they overlap and look sweet (things lower on the screen overlap things higher)
     var SortedRenObj = RenderObj.sort(RenderOrder);
     
-    
+    var RenTileSize = Math.floor(GridSize * RenderWindowScale);
+
     //calculate their relative location from the abosolute location and the camera location
     //draw it up
     var dst = {x: 0, y: 0};
     for (var RenObj of SortedRenObj) {
         //calculate offset to drop the image down so that the bounding box defined in RenObj is at the bottom of the image
-        var imageHeightOffset = this.images[RenObj.id].height - RenObj.height;
-        dst.x = (this.width / 2) + (RenObj.x - this.camera.x)
-        dst.y = (this.height / 2) + (RenObj.y - this.camera.y) - imageHeightOffset;
-        this.layer.drawImage(this.images[RenObj.id],dst.x,dst.y);
+        var imageHeightOffset = (this.images[RenObj.id].height - RenObj.height) * RenderWindowScale;
+        
+        var scaledheight = this.images[RenObj.id].height * RenderWindowScale;
+        var scaledwidth = this.images[RenObj.id].width * RenderWindowScale;
+        
+        dst.x = (this.width / 2) + (RenObj.x - this.camera.x ) * RenderWindowScale;
+        dst.y = (this.height / 2) + (RenObj.y - this.camera.y) * RenderWindowScale - imageHeightOffset; //- imageHeightOffset 
+        this.layer.drawImage(this.images[RenObj.id],dst.x,dst.y,scaledwidth,scaledheight);
     }
     
 }
@@ -286,8 +309,9 @@ var RenderMenu = function(ActiveTab){
 
 var mapclick = function(mouseX, mouseY)
 {
-    var TileX = Math.floor((mouseX + this.camera.x - (this.width / 2))/GridSize);
-    var TileY = Math.floor((mouseY + this.camera.y - (this.height / 2))/GridSize);
+    var RenTileSize = Math.floor(GridSize * RenderWindowScale);
+    var TileX = Math.floor((mouseX + (this.camera.x* RenderWindowScale) - (this.width / 2))/RenTileSize);
+    var TileY = Math.floor((mouseY + (this.camera.y* RenderWindowScale) - (this.height / 2))/RenTileSize);
     WorldMap.BackgroundTileMap[TileX * WorldMap.height + TileY].TileId = this.activeTile;
 }
 
