@@ -1,0 +1,661 @@
+{ "height":100,
+ "layers":[
+        {
+         "compression":"zlib",
+         "data":"eJztXG1yE0cQbf2AgG0glwBiiwBnIAXEskk4AxQhlh3b17DlGK6BIcAlklBJrpHvHCLTpXm1b9uzq11J3hmZ+dHV+trZ2X79unt6xr4nIl84uZd1EvqJk6dZJ6Nj+0PWmR8p69j+kHXmR8o6tj9knfmRso7tD1lnfqSsY\/tD1t3z43JPZMnJLx3db5F1F7ivOywGTm714vrfupMNJwMveL0UaT6x+KF4bHg8YvgdcFh2MiQ5dLLt5Kjj+cTmx6rDoR+RHwfe9orBiHDY9p8ddTyfFPih8WozAj8uy5gXhx6LIWlgsiLjuLVZNX8Z8wvCsQ7xbpH4se75sdmQH8j\/y16zLNPnKw3GAzfAD+ARwga4IJ\/YOLctBb8gI3\/d5pzs1RU\/1pz8JmW7Wg35Vcb5ZuBxXPP5BzKg+mDS\/Q+MDWFTxmUk5Ti2EsDhlpMTJ69J9w2WVfxKjR+r3n4b3rZrZOc1sjtk4D\/\/T5\/V6aGRfz1eTfh2QBhsS8GT0GvgxHy65W2\/Fhj\/lcem73+\/Mwd7dcGPrd7YrhDY1X5mv\/snMN5TKeoDxUPzw8AIx\/ZlgwXjwPELHOhLOY7tNHk+f\/3OHOzVBT\/moWH3TSn4pnisSuGfXDNxvB\/R5\/jNoZTjlH634vHD94rPmwbzO6DrZ80jXfBjVo0aSW23IwU\/NB\/pml\/jxmspx3ZIn7DgHMFxiXFhXJv6+yspeNWET4vMj3XCQuWI8AAmdXUW84fzOGPCvOHYtdZinltS+Mt55gfyMWyk8eNvGed01AF1dZbFk3MDY8M8ATfazBN4aMyaZT0S2\/\/rNGzJWOB7YDJpXYPYbtce4EVVjYW1iNYGmw3mCx4iZp1HfsCWaqejwPdbNXXYEwlzg+sr2J\/fcx1msZnk9+DyLHVWCjyo0ltSrAFs\/X\/FydckX5G+KkXdw\/YfSbGuC63puD7jtQg+Qyyqmi\/WnueVH1hvKRaPjN2vOXnhZM\/JrpNj\/\/6uk\/dScINrX\/AMYz0mzLjeCuUT8KguP3BOPy\/8YLvDzx95++95u+\/613ve\/m+dvPP6tpTrY15rA4\/v\/BgvyYb4Lcc1jmU219fxeZZ+cQy\/Z5vD3\/H+mre5yr6f4\/dS8OCutz3s\/96MD15Y\/4aNd\/x4xx4PXrsgdjEGnEuYY3X5Y5b9lK79\/4q3OWLMMb2Ght\/f9tf9YOxfNT7XY7w25\/pK8VB+aGz7VAqf0NjFaxVbczFXQv7P8XGR+AFbsK+\/Nfqdx0J\/r7FnQ4q6s2589JHYnzkvMx57JMBGMQFfwBW+HlxBvcX9Mo6Pi8QP4IG8O+n37LN1fsf+yf49lHJtq2Mo3+5ImY\/HHhPkeWDL\/LLjhfphbdf1KfBDn3+\/xXWwDfp1\/D36jMgZXK\/CZuznGONzKbh4h3DZ9XOzsYttz\/k9VL\/NYp8u+cG542WL62Ab9CM2pNxPZ\/tzfLE9EsYEYyg2ype3HhfFRHmitd2WlG0eqg8OpcyNJv3gVPihdY3GKtQ2ba7nfaWQna3vcjzha2z9C2yWpBzHdH62l38o5fg0NGMv0v4H1hCKBXJHm+t539XWokM57bOMzzBwja2Hsc5DLYz8zn0prhFCmC\/C\/qDiwOsK1LFtxsH6rsrWvDbguBWqteyagvHFWhG1N8ctyyvWfH0X\/MD6za7h7OvQGg84cE3V1m9sHA+tLbaljBPbz9qe33P8V3tqnr8jRU2+L0U9YeveULzqgh\/oL3CviOvEF1LkhV0p+kov6D2waOsv3KNlbtg4bu11aH5v806oBkPthfXnOz9n7tnb+Mjz6oofXBtagS9xb8\/2NPBcbf2Fz7Kxv4dqHI5LNl6x2BhlsbL1G2o4HpvnwnybxznHWfG0tSLiLnoQ045rsQhxgH2dcwdjxN\/h7E5fwpjY3MA1XIh7dgzUBGfNjyYaHEK9yLhcbTke96FC9ZDNpZYzI\/PdUMr7i9wTsfzge\/Br5obFj7E7mtGO866nkA+BCfeG2vDC5gh+bvZ71ram4vew01N6bosLj8c25nnwuHZOiHeznFOcFz9svkEMQ54HJm3yRchPbZ628SrEJcYjdF\/se53I6XNDfTldm1m+cGxUSXV\/EFxBLYZ6vur32M\/hmGNzAvtryPY2lnHtc6En8omTnwL3x\/6v5THOVjEvLGfsfWfJI2fBD5tXkOs5dtX5KeIH48H5mv2+Ko5zvYXccd9hccPJBxnjctHJpd74\/liX78vpeaE3wPcP1WbMl2nPYZ0lP6DRF+J1b10+WZXT8YJtEcon\/DkwQOxRLH508rOTBx4T1Q+dfNkb3xd7kNxX02su9Yr5YC7DwD1tTTbtOayz5gc09+rAk0l1F++92vxp61mOGbbPCixuegweeLnp8QA\/dF7gh8Y2veaDxwSxCz5iazpbQ6DWSpEflidYP9blE3s+hNcOwIZ9FJw48VjweL87+VPKOChH\/nKf\/eF\/h77VvsEPv7H8DeV55g7wSJUfNp+g71LFE+T2kZTPXyG\/2rrGnl+0+pmz7Tdennv9LZ1rZH5c7xVcAn\/seJhHaF0CDk9TZ3XJD2jGpKruQs8IWNT5J7CYdj7YJ8O+5X2Phcpnvcl5joVj2TT7IV3zI8QTYMJ1F\/afeL\/I+idyfh0vmmj0FnB+6zrlmSp+hDTWT034mhI\/LE9Qd+3T9\/w3ysBlIKfP0dpzi7bfbz977J8b51YGUj4nomM\/o7iG\/DLpebivAE5PY5dY\/IDmugsc0c+5xuT1OLBZkvK5Re7t82vwj\/fCuA\/AtQHqVMUG5yaaPAfvCUzLixT4YXmCuGXPqGEdwdjgnCHqglCPH6\/x\/raU6zbYj2N\/FS6hefPfQ3PdMYs9YvMDGrbFPgqw0RijuZ7P5OK5URM12Xfkc0FV6xTuD2Adgf6gHS+E66x5LBV+qOY9L95PwVkU3qNDbxD7eFX78cAAPmzrY1u3QfPfA6L3xXnCjjcPXqTGj1Be4TO72ENXG6DmUgn9Pav9vwrc48K6EljY+17oFT0S8ITvBxx4jToPXqTGj0mazxRAc5xnWZYyD9RmyBFvvM0v+l4vBO+5R2LXOdynQnya93PG5kFTzXsUHOO5h8c84Jhkx9N6VvsnWIPfoB7Kw165z4h6AvfF69C4HxM\/rOb1IAtjVpUfVGtP6zn1Tqw0XXd8rPz4WHRsP8868yNlHdsfss78SFnH9oesMz9S1rH9IevMj5R1bH\/IOvMjZR3bH7LO\/EhZx\/aHrDM\/Utax\/SHrzI+UdWx\/yDrzI2Ud2x+yzvxIWcf2h6wzP1LWsf0h68yPlHVsf8g68yNlHdsfss78SFnH9oesMz9S1rH9IevMj5R1bH\/IOvMjZR3bH7LO\/EhZx\/aHrMv6f\/1JRRo=",
+         "encoding":"base64",
+         "height":100,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":100,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":0,
+         "name":"Trees",
+         "objects":[
+                {
+                 "gid":770,
+                 "height":169,
+                 "id":23,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":194,
+                 "x":1182,
+                 "y":882
+                }, 
+                {
+                 "gid":770,
+                 "height":240,
+                 "id":24,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":246,
+                 "x":1203,
+                 "y":856
+                }, 
+                {
+                 "gid":770,
+                 "height":132,
+                 "id":25,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":158,
+                 "x":1144,
+                 "y":853
+                }, 
+                {
+                 "gid":770,
+                 "height":169,
+                 "id":26,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":194,
+                 "x":792,
+                 "y":769
+                }, 
+                {
+                 "gid":770,
+                 "height":169,
+                 "id":27,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":194,
+                 "x":796,
+                 "y":934
+                }, 
+                {
+                 "gid":770,
+                 "height":334,
+                 "id":38,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":348,
+                 "x":1110,
+                 "y":510
+                }, 
+                {
+                 "gid":770,
+                 "height":169,
+                 "id":42,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":194,
+                 "x":706,
+                 "y":330
+                }, 
+                {
+                 "gid":770,
+                 "height":169,
+                 "id":43,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":194,
+                 "x":499,
+                 "y":585
+                }, 
+                {
+                 "gid":770,
+                 "height":169,
+                 "id":44,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":194,
+                 "x":471,
+                 "y":750
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":0,
+         "name":"BoundingBoxes",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }],
+ "nextobjectid":45,
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "renderorder":"right-down",
+ "tileheight":16,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"..\/Desktop\/tilea2.png",
+         "imageheight":384,
+         "imagewidth":512,
+         "margin":0,
+         "name":"Outside",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "terrains":[
+                {
+                 "name":"Sand",
+                 "tile":109
+                }, 
+                {
+                 "name":"Grass",
+                 "tile":65
+                }, 
+                {
+                 "name":"Stone",
+                 "tile":137
+                }, 
+                {
+                 "name":"TallGrass",
+                 "tile":325
+                }, 
+                {
+                 "name":"Dirt",
+                 "tile":298
+                }],
+         "tilecount":768,
+         "tileheight":16,
+         "tiles":
+            {
+             "10":
+                {
+                 "terrain":[1, 2, 2, 2]
+                },
+             "104":
+                {
+                 "terrain":[1, 2, 1, 2]
+                },
+             "105":
+                {
+                 "terrain":[2, 2, 2, 2]
+                },
+             "106":
+                {
+                 "terrain":[2, 2, 2, 2]
+                },
+             "107":
+                {
+                 "terrain":[2, 1, 2, 1]
+                },
+             "108":
+                {
+                 "terrain":[1, 0, 1, 0]
+                },
+             "109":
+                {
+                 "terrain":[0, 0, 0, 0]
+                },
+             "11":
+                {
+                 "terrain":[2, 1, 2, 2]
+                },
+             "110":
+                {
+                 "terrain":[0, 0, 0, 0]
+                },
+             "111":
+                {
+                 "terrain":[0, 1, 0, 1]
+                },
+             "12":
+                {
+                 "terrain":[1, 1, 1, 0]
+                },
+             "13":
+                {
+                 "terrain":[1, 1, 0, 1]
+                },
+             "136":
+                {
+                 "terrain":[1, 2, 1, 2]
+                },
+             "137":
+                {
+                 "terrain":[2, 2, 2, 2]
+                },
+             "138":
+                {
+                 "terrain":[2, 2, 2, 2]
+                },
+             "139":
+                {
+                 "terrain":[2, 1, 2, 1]
+                },
+             "14":
+                {
+                 "terrain":[1, 0, 0, 0]
+                },
+             "140":
+                {
+                 "terrain":[1, 0, 1, 0]
+                },
+             "141":
+                {
+                 "terrain":[0, 0, 0, 0]
+                },
+             "142":
+                {
+                 "terrain":[0, 0, 0, 0]
+                },
+             "143":
+                {
+                 "terrain":[0, 1, 0, 1]
+                },
+             "15":
+                {
+                 "terrain":[0, 1, 0, 0]
+                },
+             "168":
+                {
+                 "terrain":[1, 2, 1, 1]
+                },
+             "169":
+                {
+                 "terrain":[2, 2, 1, 1]
+                },
+             "170":
+                {
+                 "terrain":[2, 2, 1, 1]
+                },
+             "171":
+                {
+                 "terrain":[2, 1, 1, 1]
+                },
+             "172":
+                {
+                 "terrain":[1, 0, 1, 1]
+                },
+             "173":
+                {
+                 "terrain":[0, 0, 1, 1]
+                },
+             "174":
+                {
+                 "terrain":[0, 0, 1, 1]
+                },
+             "175":
+                {
+                 "terrain":[0, 1, 1, 1]
+                },
+             "196":
+                {
+                 "terrain":[1, 1, 1, 3]
+                },
+             "197":
+                {
+                 "terrain":[1, 1, 3, 1]
+                },
+             "198":
+                {
+                 "terrain":[1, 3, 3, 3]
+                },
+             "199":
+                {
+                 "terrain":[3, 1, 3, 3]
+                },
+             "200":
+                {
+                 "terrain":[1, 1, 1, 4]
+                },
+             "201":
+                {
+                 "terrain":[1, 1, 4, 1]
+                },
+             "202":
+                {
+                 "terrain":[1, 4, 4, 4]
+                },
+             "203":
+                {
+                 "terrain":[4, 1, 4, 4]
+                },
+             "228":
+                {
+                 "terrain":[1, 3, 1, 1]
+                },
+             "229":
+                {
+                 "terrain":[3, 1, 1, 1]
+                },
+             "230":
+                {
+                 "terrain":[3, 3, 1, 3]
+                },
+             "231":
+                {
+                 "terrain":[3, 3, 3, 1]
+                },
+             "232":
+                {
+                 "terrain":[1, 4, 1, 1]
+                },
+             "233":
+                {
+                 "terrain":[4, 1, 1, 1]
+                },
+             "234":
+                {
+                 "terrain":[4, 4, 1, 4]
+                },
+             "235":
+                {
+                 "terrain":[4, 4, 4, 1]
+                },
+             "260":
+                {
+                 "terrain":[1, 1, 1, 3]
+                },
+             "261":
+                {
+                 "terrain":[1, 1, 3, 3]
+                },
+             "262":
+                {
+                 "terrain":[1, 1, 3, 3]
+                },
+             "263":
+                {
+                 "terrain":[1, 1, 3, 1]
+                },
+             "264":
+                {
+                 "terrain":[1, 1, 1, 4]
+                },
+             "265":
+                {
+                 "terrain":[1, 1, 4, 4]
+                },
+             "266":
+                {
+                 "terrain":[1, 1, 4, 4]
+                },
+             "267":
+                {
+                 "terrain":[1, 1, 4, 1]
+                },
+             "292":
+                {
+                 "terrain":[1, 3, 1, 3]
+                },
+             "293":
+                {
+                 "terrain":[3, 3, 3, 3]
+                },
+             "294":
+                {
+                 "terrain":[3, 3, 3, 3]
+                },
+             "295":
+                {
+                 "terrain":[3, 1, 3, 1]
+                },
+             "296":
+                {
+                 "terrain":[1, 4, 1, 4]
+                },
+             "297":
+                {
+                 "terrain":[4, 4, 4, 4]
+                },
+             "298":
+                {
+                 "terrain":[4, 4, 4, 4]
+                },
+             "299":
+                {
+                 "terrain":[4, 1, 4, 1]
+                },
+             "324":
+                {
+                 "terrain":[1, 3, 1, 3]
+                },
+             "325":
+                {
+                 "terrain":[3, 3, 3, 3]
+                },
+             "326":
+                {
+                 "terrain":[3, 3, 3, 3]
+                },
+             "327":
+                {
+                 "terrain":[3, 1, 3, 1]
+                },
+             "328":
+                {
+                 "terrain":[1, 4, 1, 4]
+                },
+             "329":
+                {
+                 "terrain":[4, 4, 4, 4]
+                },
+             "330":
+                {
+                 "terrain":[4, 4, 4, 4]
+                },
+             "331":
+                {
+                 "terrain":[4, 1, 4, 1]
+                },
+             "356":
+                {
+                 "terrain":[1, 3, 1, 1]
+                },
+             "357":
+                {
+                 "terrain":[3, 3, 1, 1]
+                },
+             "358":
+                {
+                 "terrain":[3, 3, 1, 1]
+                },
+             "359":
+                {
+                 "terrain":[3, 1, 1, 1]
+                },
+             "360":
+                {
+                 "terrain":[1, 4, 1, 1]
+                },
+             "361":
+                {
+                 "terrain":[4, 4, 1, 1]
+                },
+             "362":
+                {
+                 "terrain":[4, 4, 1, 1]
+                },
+             "363":
+                {
+                 "terrain":[4, 1, 1, 1]
+                },
+             "40":
+                {
+                 "terrain":[1, 2, 1, 1]
+                },
+             "41":
+                {
+                 "terrain":[2, 1, 1, 1]
+                },
+             "42":
+                {
+                 "terrain":[2, 2, 1, 2]
+                },
+             "43":
+                {
+                 "terrain":[2, 2, 2, 1]
+                },
+             "44":
+                {
+                 "terrain":[1, 0, 1, 1]
+                },
+             "45":
+                {
+                 "terrain":[0, 1, 1, 1]
+                },
+             "46":
+                {
+                 "terrain":[0, 0, 1, 0]
+                },
+             "47":
+                {
+                 "terrain":[0, 0, 0, 1]
+                },
+             "65":
+                {
+                 "terrain":[1, 1, 1, 1]
+                },
+             "66":
+                {
+                 "terrain":[1, 1, 1, 1]
+                },
+             "72":
+                {
+                 "terrain":[1, 1, 1, 2]
+                },
+             "73":
+                {
+                 "terrain":[1, 1, 2, 2]
+                },
+             "74":
+                {
+                 "terrain":[1, 1, 2, 2]
+                },
+             "75":
+                {
+                 "terrain":[1, 1, 2, 1]
+                },
+             "76":
+                {
+                 "terrain":[1, 1, 1, 0]
+                },
+             "77":
+                {
+                 "terrain":[1, 1, 0, 0]
+                },
+             "78":
+                {
+                 "terrain":[1, 1, 0, 0]
+                },
+             "79":
+                {
+                 "terrain":[1, 1, 0, 1]
+                },
+             "8":
+                {
+                 "terrain":[1, 1, 1, 2]
+                },
+             "9":
+                {
+                 "terrain":[1, 1, 2, 1]
+                },
+             "97":
+                {
+                 "terrain":[1, 1, 1, 1]
+                },
+             "98":
+                {
+                 "terrain":[1, 1, 1, 1]
+                }
+            },
+         "tilewidth":16,
+         "transparentcolor":"#ffffff"
+        }, 
+        {
+         "firstgid":769,
+         "margin":0,
+         "name":"Trees",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tilecount":2,
+         "tileheight":169,
+         "tiles":
+            {
+             "0":
+                {
+                 "image":"GitHub\/Adventure-Forge\/Adventure Forge Client\/images\/patch_box.png"
+                },
+             "1":
+                {
+                 "image":"..\/Desktop\/TiledObjects\/BigTree.PNG"
+                }
+            },
+         "tilewidth":194
+        }],
+ "tilewidth":16,
+ "version":1,
+ "width":100
+}

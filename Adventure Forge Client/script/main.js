@@ -1,10 +1,16 @@
-var GridSize = 64;
+var GridSize = 16;
 var TileSize = GridSize;
 var RenderWindowScale = 1;
 
 var app = new PLAYGROUND.Application({
     
-    scale: 1,
+    scale: 0.5,
+    
+    player: {
+        position: {
+            x: 0,y: 0
+        }
+    },
     
    createmysprite: function(nameID) {
         return {
@@ -23,9 +29,28 @@ var app = new PLAYGROUND.Application({
         this.loadImage("sandstone");
         this.loadImage("sand");
         this.loadImage("podchair");
+        this.loadImage("tiles");
+        this.loadImage("Players");
+        this.loadImage("tree");
         this.chair = this.createmysprite("podchair");
-        WorldMap(150,150);
+        WorldMap();
+        this.vectorArr = new Array();
         this.activeTile ="grass";
+        
+        //var newobj = { x: 250, y: 250, height: 32, width: 32, Spriteid: "podchair"};
+        
+
+
+        
+        //this.socket.on('disconnect', function(){});
+        
+        this.ServerSocket = io('http://localhost:3000');
+        this.ServerSocket.on('connect', function(){
+            
+            this.send({Type:'GETMAP'});
+        
+        });
+        this.ServerSocket.on('message', NetworkHandler);
     },
     
     step: function(dt){
@@ -47,15 +72,18 @@ var app = new PLAYGROUND.Application({
         this.camera.x = Math.round(this.camera.x)
         this.camera.y = Math.round(this.camera.y)
         
+        //update player sprite
+        processVectors.call(this,this.vectorArr,dt);
+        
     },
     
     render: function (dt){
         
         var rendchair = this.chair;
         this.layer.clear("#000000");
-        RenderBGmap.call(this,WorldMap);
+        RenderBGmap.call(this,WorldMap.BackgroundTileMap);
         RenderMapObjs.call(this,WorldMap);
-        RenderMenu.call(this,"");
+        //RenderMenu.call(this,"");
         this.layer.font("32px Arial");      
         this.layer.fillStyle("#fff");
         this.layer.fillText(this.text, 316, 32);
@@ -72,14 +100,7 @@ var app = new PLAYGROUND.Application({
     mousedown: function(data) {
         this.text = "mouse down " + data.button + " " + data.x +  " , " + data.y;
         this.clicking = true;
-        if(data.x < 300)
-        {
-            menuClick.call(this,data.x,data.y);
-        }
-        else
-        {
-            mapclick.call(this,data.x,data.y);
-        }
+        mapclick.call(this,data.x,data.y);
     },
 
     mouseup: function(data) {
@@ -98,7 +119,7 @@ var app = new PLAYGROUND.Application({
             }
         }
         if(event.delta ===1){
-            if(RenderWindowScale < 1.0){
+            if(RenderWindowScale < 4.0){
                 RenderWindowScale += 0.1;
             }
             //GridSize = Math.floor(GridSize *= 1.1);
@@ -146,33 +167,8 @@ var app = new PLAYGROUND.Application({
 
 
 
-var WorldMap = function(width,height) {
-    WorldMap.width = width;
-    WorldMap.height = height;
-    WorldMap.BackgroundTileMap = new Array(width*height);
-    WorldMap.MapObjects = new Array();
-    (function populatemap(){
-        for(var i = 0; i< width; i++){
-            for(var j = 0; j < height; j++){
-                WorldMap.BackgroundTileMap[i * height + j] = { 
-                    xCoOrd: i,
-                    yCoOrd: j,
-                    TileId: "grass"
-                };
-            }
-        }
-    })();
-    
-    var newobj = { x: 200, y: 200, height: 32, width: 32, id: "podchair"}
-    WorldMap.MapObjects.push(newobj);
-    newobj = { x: 200, y: 300, height: 32, width: 32, id: "podchair"}
-    WorldMap.MapObjects.push(newobj);
-    newobj = { x: 200, y: 400, height: 32, width: 32, id: "podchair"}
-    WorldMap.MapObjects.push(newobj);
-    newobj = { x: 200, y: 321, height: 32, width: 32, id: "podchair"}
-    WorldMap.MapObjects.push(newobj);
-    newobj = { x: 200, y: 311, height: 32, width: 32, id: "podchair"}
-    WorldMap.MapObjects.push(newobj);
+var WorldMap = function() {
+    WorldMap.MapObjects = {};
 }
 
 var RenderBGmap = function(WorldMap) {
@@ -197,16 +193,31 @@ var RenderBGmap = function(WorldMap) {
 	var xend_tile = Math.floor(CentTileX + (xtileres/ 2 + tilebuf));
     var dst = {x: 0, y: 0};
     
-    var CameraScaledx = this.camera.x * RenderWindowScale;
-    var CameraScaledy = this.camera.y * RenderWindowScale;
+    var CameraScaledx = Math.floor(this.camera.x * RenderWindowScale);
+    var CameraScaledy = Math.floor(this.camera.y * RenderWindowScale);
+    
+    //resolve tile_id to texture coords
+    //tiles are indexed from left to right, going from top to bottom
+    //e.g.
+    //0, 1 , 2
+    //3, 4 , 5
+
+    
     
     for (var i = xstart_tile; i < xend_tile; i++){
         for (var j = ystart_tile; j < yend_tile; j++){
-            if(i > 0 && i < WorldMap.width && j > 0 && j < WorldMap.height){
-                var tile = WorldMap.BackgroundTileMap[i * WorldMap.height + j]
-                dst.x = (this.width / 2) + ((i * RenTileSize) - CameraScaledx);
-                dst.y = (this.height / 2) +  ((j * RenTileSize) - CameraScaledy);
-                this.layer.drawImage(this.images[tile.TileId],dst.x,dst.y,RenTileSize,RenTileSize);
+            if(i > 0 && i < WorldMap.sizeX && j > 0 && j < WorldMap.sizeY){
+                var tile = WorldMap.MapData[j * WorldMap.sizeX + i]
+                
+                var imagetilesx = 32;
+                var imagetilesy = 24;
+                var imagexcoord = ((Math.floor(tile % imagetilesx)) - 1)*16;
+                var imageycoord = (Math.floor(tile / imagetilesx))*16;
+                
+                
+                dst.x = Math.floor((this.width / 2)) + ((i * RenTileSize) - CameraScaledx);
+                dst.y = Math.floor((this.height / 2)) +  ((j * RenTileSize) - CameraScaledy);
+                this.layer.drawImage(this.images["tiles"],imagexcoord,imageycoord,16,16,dst.x,dst.y,RenTileSize,RenTileSize);
             }
         }
     }
@@ -221,27 +232,72 @@ var RenderMapObjs = function(WorldMap) {
         width: this.width / RenderWindowScale, 
         height: this.height / RenderWindowScale
     }
-    var RenderObj = WorldMap.MapObjects.filter(CheckInBounds.bind(this,viewbounds));
+    
+    var RenderObj = new Array();
+    for(var obj in WorldMap.MapObjects){
+        if(CheckInBounds(WorldMap.MapObjects[obj],viewbounds)){
+            RenderObj.push(WorldMap.MapObjects[obj]);
+        }
+    }
+    
+    //var RenderObj = WorldMap.MapObjects.filter(CheckInBounds.bind(this,viewbounds));
+//    var RenderObjId = Object.keys(WorldMap.MapObjects).filter(CheckInBounds.bind(this,viewbounds));
+//    
+//    var RenderObj = new Array();
+//    
+//    for (var ObjId of RenderObjId) {
+//        RenderObj.push(WorldMap.MapObjects[ObjId]);
+//    }
+    
+    
     //order them so they overlap and look sweet (things lower on the screen overlap things higher)
     var SortedRenObj = RenderObj.sort(RenderOrder);
     
     var RenTileSize = Math.floor(GridSize * RenderWindowScale);
+    var ObjRenderScale = (RenTileSize/GridSize);
 
     //calculate their relative location from the abosolute location and the camera location
     //draw it up
     var dst = {x: 0, y: 0};
     for (var RenObj of SortedRenObj) {
-        //calculate offset to drop the image down so that the bounding box defined in RenObj is at the bottom of the image
-        var imageHeightOffset = (this.images[RenObj.id].height - RenObj.height) * RenderWindowScale;
+        if(RenObj.Spriteid === 770){
+            RenObj.Spriteid = "tree";
+        }
+
         
-        var scaledheight = this.images[RenObj.id].height * RenderWindowScale;
-        var scaledwidth = this.images[RenObj.id].width * RenderWindowScale;
+        if(RenObj.Spriteid === "player"){
+            //player and clothing from spritesheet etc.
+            //var imageHeightOffset = (16 - RenObj.height) * RenderWindowScale;
+            var scaledheight = 16 * ObjRenderScale;
+            var scaledwidth = 16 * ObjRenderScale;
+            
+            dst.x = (this.width / 2) + (RenObj.x * ObjRenderScale) - (this.camera.x * RenderWindowScale);
+            dst.y = (this.height / 2) + (RenObj.y * ObjRenderScale) - (this.camera.y * RenderWindowScale);// - imageHeightOffset; //- imageHeightOffset 
+            
+            this.layer.drawImage(this.images["Players"],0,0,16,16,dst.x,dst.y,scaledwidth,scaledheight);
+            
+        }
+        else{
+            //calculate offset to drop the image down so that the bounding box defined in RenObj is at the bottom of the image
+            var imagexscale = RenObj.width / this.images[RenObj.Spriteid].width;
+            var imageyscale = RenObj.height / this.images[RenObj.Spriteid].height;
+            var scaledheight = this.images[RenObj.Spriteid].height * ObjRenderScale;
+            var scaledwidth = this.images[RenObj.Spriteid].width * ObjRenderScale;
+            scaledheight *= imageyscale;
+            scaledwidth *= imagexscale;
+            dst.x = (this.width / 2) + (RenObj.x * ObjRenderScale) - (this.camera.x * RenderWindowScale);
+            dst.y = (this.height / 2) + (RenObj.y * ObjRenderScale) - (this.camera.y * RenderWindowScale);// - imageHeightOffset; 
+            
+            this.layer.drawImage(this.images[RenObj.Spriteid],dst.x,dst.y,scaledwidth,scaledheight);
+        }
         
-        dst.x = (this.width / 2) + (RenObj.x - this.camera.x ) * RenderWindowScale;
-        dst.y = (this.height / 2) + (RenObj.y - this.camera.y) * RenderWindowScale - imageHeightOffset; //- imageHeightOffset 
-        this.layer.drawImage(this.images[RenObj.id],dst.x,dst.y,scaledwidth,scaledheight);
+        
     }
     
+}
+
+var renderPLayer = function(PlayerObj){
+    this.layer.drawImage(this.images["Players"],0,0,16,16,dst.x,dst.y,16*RenderWindowScale,16*RenderWindowScale);
 }
 
 var menuClick = function(MouseX,MouseY){
@@ -312,11 +368,28 @@ var mapclick = function(mouseX, mouseY)
     var RenTileSize = Math.floor(GridSize * RenderWindowScale);
     var TileX = Math.floor((mouseX + (this.camera.x* RenderWindowScale) - (this.width / 2))/RenTileSize);
     var TileY = Math.floor((mouseY + (this.camera.y* RenderWindowScale) - (this.height / 2))/RenTileSize);
-    WorldMap.BackgroundTileMap[TileX * WorldMap.height + TileY].TileId = this.activeTile;
+    var MapX = (mouseX + (this.camera.x* RenderWindowScale) - (this.width / 2))/(RenTileSize/GridSize) -8;
+    var MapY = (mouseY + (this.camera.y* RenderWindowScale) - (this.height / 2))/(RenTileSize/GridSize) - 16;
+    
+    var MapX2 = (mouseX + (this.camera.x* RenderWindowScale) - (this.width / 2));
+    var MapY2 = (mouseY + (this.camera.y* RenderWindowScale) - (this.height / 2));
+    
+    
+    var MovePacket = {
+        Type: 'MOVECLICK',
+        Data: {
+            mapX: MapX,
+            mapY: MapY,
+        }
+    };
+    
+    
+    this.ServerSocket.send(MovePacket);
+    //WorldMap.BackgroundTileMap[TileX * WorldMap.height + TileY].TileId = this.activeTile;
 }
 
-var CheckInBounds = function(Obj1,Obj2)
-{
+var CheckInBounds = function(Obj1,Obj2){
+    //var Obj2 = WorldMap.MapObjects[Obj2name];
     //from 2 objects to points
     var A1 = {x: Obj1.x, y: Obj1.y};
     var A2 = {x: Obj1.x + Obj1.width, y: Obj1.y+Obj1.height};
@@ -348,4 +421,175 @@ function RenderOrder(a, b) {
   }
   // a must be equal to b
   return 0;
+}
+
+
+var NetworkHandler = function(message){
+    if(message.Type === 'BGMAP'){
+        WorldMap.BackgroundTileMap = extractBGMAP(message.Data);
+    }
+    else if(message.Type === 'MOVEOBJ'){
+        WorldMap.MapObjects["player"].x = message.Data.x;
+        WorldMap.MapObjects["player"].y = message.Data.y;
+    }
+    else if(message.Type === 'OBJVECTOR'){
+        for(var vector of app.vectorArr){
+            if(vector.OBJID === message.Data.OBJID){
+                vector.startX = message.Data.startX;
+                vector.startY = message.Data.startY;
+                vector.endX = message.Data.endX;
+                vector.endY = message.Data.endY;
+                vector.speed = message.Data.speed;
+            }
+        }
+        
+        app.vectorArr.push(message.Data);
+    }
+    else if(message.Type === 'NEWOBJ'){
+        WorldMap.MapObjects[message.Data.objid] = message.Data;
+    }
+    else if(message.Type === 'OBJMAP'){
+        WorldMap.MapObjects = message.Data;
+        WorldMap.MapObjects["podchair"] = { x: 1500, y: 1580, height: 32, width: 32, Spriteid: "podchair"};
+    }
+}
+
+
+
+var extractBGMAP = function(rawMAP){
+    var decodedMap = window.atob(rawMAP.map);
+    
+    var uintMAP = new Uint8Array(decodedMap.length);
+    for(var i=0,j=decodedMap.length;i<j;++i){
+        uintMAP[i]=decodedMap.charCodeAt(i);
+    }
+    
+    var inflate = new Zlib.Inflate(uintMAP);
+    var BinaryTileMap = inflate.decompress();
+    var arraybuf = Array.from(BinaryTileMap);
+    var TileMapArr = new Int32Array(BinaryTileMap.buffer,0,arraybuf.length/4);
+    var FullMapRaw = {
+        sizeX:rawMAP.mapsizex,
+        sizeY:rawMAP.mapsizey,
+        MapData: TileMapArr
+    }
+    return FullMapRaw;
+}
+
+
+var processVectors = function(Vectors, dt){
+    
+    for(var vector of Vectors)
+    {
+        //increment vector
+        var distx = vector.endX-vector.startX;
+        var disty = vector.endY-vector.startY;
+        
+        var displacement = dt*vector.speed;
+        
+        var vectorAngle = Math.atan2(distx,disty);
+        
+        var moveX = displacement* Math.sin(vectorAngle);
+        var moveY = displacement* Math.cos(vectorAngle);
+        
+        
+        var posX;
+        var newPosX = moveX + vector.startX;
+        //check if the new position is inside a bounding box, if it is lock movement to the correct edge of the bounding box
+        if(Math.abs(moveX) > Math.abs(distx)){
+            posX = vector.endX;
+        }
+        else {
+            posX = newPosX;
+        }
+        
+        var posY;
+        if(Math.abs(moveY) > Math.abs(disty)){
+            posY = vector.endY;
+        }
+        else
+        {
+            posY = moveY + vector.startY;
+        }
+        
+
+        //set obj position
+        WorldMap.MapObjects[vector.OBJID].x = posX;
+        WorldMap.MapObjects[vector.OBJID].y = posY;
+        
+        //set vector start to obj postion
+        vector.startX = posX;
+        vector.startY = posY;
+        
+        //check if vector has ended
+        if(posX === vector.endX && posY === vector.endY){
+            //remove vector from vector list
+        }
+        
+    }
+    
+}
+
+var getsideofBB = function(Coord, Bbox){
+    
+    if(Coord.Axis = X){
+        if(Coord.X < Bbox.X){
+            //Left side of Bbox
+        }
+        else{
+            //right side of Bbox
+        }
+    }
+    else {
+        if(Coord.Y < Bbox.Y){
+            //Above Bbox
+        }
+        else {
+            //Below Bbox
+        }
+    }
+}
+
+
+var checkVectorBounds = function(Obj1,Obj2){
+    
+    //check if there is a bounding box colision
+    //  -get the destination (startvector + movement)
+    //  -check if the destination is within a bounding box
+    //      -if it is then check what side the player was on then limit the movement to the coresponding bounding box edge, along that axis of movement
+    
+    var vectorDest = vectorStart + movement;
+    var colBB = null;
+    for(var obj in WorldMap.BoundingBoxes){
+        if(CheckInBounds(WorldMap.BoundingBoxes[obj],vectorDest)){
+            colBB = WorldMap.BoundingBoxes[obj];
+            break;
+        }
+    }
+    
+    if(colBB != null){
+        if( movement > 0){ //moving to the east or south
+            if(Axis = 'X'){
+                //West Side of BBox
+                //Dest = BBox.X
+            }
+            else{
+                //North Side of BBox
+                //Dest = BBox.Y
+            }
+        }
+        else{ // moving west or north
+            if(Axis = 'X'){
+                //East Side of BBox
+                //Dest = BBox.X + BBox.Width
+            }
+            else{
+                //South Side of BBox
+                //Dest = BBox.Y + BBox.Width
+            }
+            
+        }
+        //get the side the player is on
+    }
+    
 }

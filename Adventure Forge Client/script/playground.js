@@ -1321,12 +1321,14 @@ PLAYGROUND.GameLoop = function(app) {
         frame = 0;
       } else return;
     }
+      
+    var timeInMs = Date.now();
 
     var delta = Date.now() - lastTick;
 
     lastTick = Date.now();
 
-    if (delta > 1000) return;
+    //if (delta > 1000) return;
 
     var dt = delta / 1000;
 
